@@ -1,5 +1,5 @@
 # Generic make rules for advent 
-CCFLAGS=clang++ -std=c++20
+CCFLAGS=clang++ -std=c++20 -Wall
 
 a:
 	@ echo "\tuse: make day<*>"
