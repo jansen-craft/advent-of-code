@@ -1,0 +1,6 @@
+# Executables
+*.o
+*-run
+
+#VSCODE
+.vscode

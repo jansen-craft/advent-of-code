@@ -1,1 +1,1 @@
-# advent of code 2022 playground
+# advent of code 2022 compilation
