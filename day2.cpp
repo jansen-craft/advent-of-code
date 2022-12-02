@@ -28,4 +28,5 @@ int main(int argc, char** argv){
 
     std::cout << "score-first:  " << score1 << std::endl;
     std::cout << "score-second: " << score2 << std::endl;
+    ins.close();
 }
