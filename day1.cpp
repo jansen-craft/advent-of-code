@@ -23,7 +23,6 @@ int mostCalories(std::string file){
         exit(1);
     }
 
-
     v.push_back(0);
     while(getline(ins, s)){
         if(s == ""){
