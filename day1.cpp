@@ -7,64 +7,65 @@ int mostCalories(std::string file);
 int topThree(std::string file);
 
 int main(){
-    //std::cout << "max: " << mostCalories("a-input.txt") << std::endl;
+    // std::cout << "max: " << mostCalories("a-input.txt") << std::endl;
     std::cout << "total: " << topThree("input-files/day1-full.txt") << std::endl;
 }   
 
 int mostCalories(std::string file){
-    std::vector<int> v;
-    std::ifstream ins;
-    std::string s;
-    int i = 0;
+    std::vector<int> elvesCalories;
+    std::ifstream inStream;
+    std::string tmp;
+    int currentElf = 0;
     int max = 0;
-    ins.open(file);
-    if(ins.fail()){
+
+    inStream.open(file);
+    if(inStream.fail()){
         std::cerr << "ERROR: file \"" << file << "\" not found" << std::endl;
         exit(1);
     }
 
-    v.push_back(0);
-    while(getline(ins, s)){
-        if(s == ""){
-            i++;
-            v.push_back(0);
+    elvesCalories.push_back(0);
+    while(getline(inStream, tmp)){
+        if(tmp == ""){
+            currentElf++;
+            elvesCalories.push_back(0);
         } else {
-            v.at(i) += stoi(s);
+            elvesCalories.at(currentElf) += stoi(tmp);
         }
-        if(v.at(i) > max){
-            max = v.at(i);
+        if(elvesCalories.at(currentElf) > max){
+            max = elvesCalories.at(currentElf);
         }
     }
-    ins.close();
+    inStream.close();
     return max;
 }
 
 int topThree(std::string file){
-    std::ifstream ins;
-    std::string s;
-    std::priority_queue<int> q;
+    std::ifstream inStream;
+    std::string tmp;
+    std::priority_queue<int> elvesByCalories;
     int total = 0;
     int elfTotal = 0;
-    ins.open(file);
-    if(ins.fail()){
+    inStream.open(file);
+    if(inStream.fail()){
         std::cerr << "ERROR: file \"" << file << "\" not found" << std::endl;
         exit(1);
     }
 
-    while(getline(ins, s)){
-        if(s == ""){    // end of elf
-            q.push(elfTotal);
+    while(getline(inStream, tmp)){
+        if(tmp == ""){    // end of elf
+            elvesByCalories.push(elfTotal);
             elfTotal = 0;
         } else {    // current elf
-            elfTotal += stoi(s);
+            elfTotal += stoi(tmp);
         }
     }
-    q.push(elfTotal);   // push last line of file
-    ins.close();
+    elvesByCalories.push(elfTotal);   // push last line of file
+    inStream.close();
 
     for (size_t i = 0; i < 3; i++){
-        total += q.top();
-        q.pop();
+        total += elvesByCalories.top();
+        elvesByCalories.pop();
     }
     
     return total;

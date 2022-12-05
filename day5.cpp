@@ -4,79 +4,77 @@
 #include <vector>
 
 int main(){
-    std::ifstream ins;
+    std::ifstream inStream;
     std::string tmp;
-    std::vector<std::stack<char>> c;
+    std::vector<std::stack<char>> stacksOfCrates;
     std::stack<std::string> stringStack;
-    std::string tops;
-    ins.open("input-files/day5-full.txt");
-    if(ins.fail()){exit(1);}
+    std::string topsOfStacks;
+    inStream.open("input-files/day5-full.txt");
+    if(inStream.fail()){exit(1);}
 
-    // cargo picture -> stack of strings to work from bottom
-    while(getline(ins, tmp) && tmp != ""){
+    // load lines of file into stack of strings (to work from the bottom)
+    while(getline(inStream, tmp) && tmp != ""){
         stringStack.push(tmp);
     }
 
-    // number of cargo stacks
-    int numStacks = stringStack.top().at(stringStack.top().size()-2) - '0';
+    // find number of crate stacks
+    int numberOfStacks = stringStack.top().at(stringStack.top().size()-2) - '0';
     stringStack.pop();
-    c.resize(numStacks);
+    stacksOfCrates.resize(numberOfStacks);
 
-    // look through cargo stack graph
+    // build stacks of crates from stack of file inputs
     while(!stringStack.empty()){
         std::string t = stringStack.top();
-
-        for (size_t i = 0; i < numStacks; i++){
-            if(t.at(4*i+1) != ' '){ // not empty
-                c.at(i).push(t.at(4*i+1));
+        for (size_t i = 0; i < numberOfStacks; i++){
+            if(t.at(4*i+1) != ' '){ // a crate is here
+                stacksOfCrates.at(i).push(t.at(4*i+1));
             }
         }
         stringStack.pop();
     }
 
-    // orders
-    std::string orderTmp = " ";
-    while(!ins.eof() && ins.peek() != -1){
-        int num, src, dest;
-        //char tmpChar;
+    // move crates around based on orders in input file
+    while(!inStream.eof() && inStream.peek() != -1){
+        int cratesToMove, sourceStack, destinationStack;
+        // char tmpChar;
 
-        ins >> orderTmp;
-        ins >> orderTmp;
-        num = stoi(orderTmp);
-        ins >> orderTmp;
-        ins >> orderTmp;
-        src = stoi(orderTmp);
-        ins >> orderTmp;
-        ins >> orderTmp;
-        dest = stoi(orderTmp);
+        inStream >> tmp;
+        inStream >> tmp;
+        cratesToMove = stoi(tmp);
+        inStream >> tmp;
+        inStream >> tmp;
+        sourceStack = stoi(tmp);
+        inStream >> tmp;
+        inStream >> tmp;
+        destinationStack = stoi(tmp);
         
-        // one at a time
-        // for (size_t i = 0; i < num; i++){
-        //     tmpChar = c.at(src-1).top();
-        //     c.at(src-1).pop();
-        //     c.at(dest-1).push(tmpChar);
+        // one crate at a time
+        // for (size_t i = 0; i < cratesToMove; i++){
+        //     tmpChar = stacksOfCrates.at(sourceStack-1).top();
+        //     stacksOfCrates.at(sourceStack-1).pop();
+        //     stacksOfCrates.at(destinationStack-1).push(tmpChar);
         // }
         
-        // multiple at a time
+        // multiple crates at a time
         std::stack<char> tmpStack;
-        for (size_t i = 0; i < num; i++){
-            tmpStack.push(c.at(src-1).top());
-            c.at(src-1).pop();
+        for (size_t i = 0; i < cratesToMove; i++){
+            tmpStack.push(stacksOfCrates.at(sourceStack-1).top());
+            stacksOfCrates.at(sourceStack-1).pop();
         }
 
-        for (size_t i = 0; i < num; i++){            
-            c.at(dest-1).push(tmpStack.top());
+        for (size_t i = 0; i < cratesToMove; i++){            
+            stacksOfCrates.at(destinationStack-1).push(tmpStack.top());
             tmpStack.pop();
         }
 
-        ins.ignore();
+        inStream.ignore();
     }
 
-    //tops
-    for (size_t i = 0; i < numStacks; i++){
-        tops.push_back(c.at(i).top());
+    // add characters at tops of stacks to string for output
+    for (size_t i = 0; i < numberOfStacks; i++){
+        topsOfStacks.push_back(stacksOfCrates.at(i).top());
     }
     
-    std::cout << tops << std::endl;
-    ins.close();
+    std::cout << topsOfStacks << std::endl;
+    inStream.close();
 }

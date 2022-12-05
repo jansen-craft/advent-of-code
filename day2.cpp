@@ -1,32 +1,35 @@
 #include <iostream>
 #include <fstream>
 
+// part 1 - input file is in format: [ opponent move ] [ my move ]
+// part 2 - input file is in format: [ opponent move ] [ game result ]
+
 int main(int argc, char** argv){
-    std::ifstream ins;
+    std::ifstream inputString;
     char game[4];
-    int score1 = 0;
-    int score2 = 0;
-    int opp_my [3][3] = {   // lookup table for game output [ opponent move ] [ my move ]
+    int part1Score = 0;
+    int part2Score = 0;
+    int part1BasedLookupTable [3][3] = {
         { 4, 8, 3 },
         { 1, 5, 9 },
         { 7, 2, 6 }
     };
-    int opp_res [3][3] = {  // lookup table for game output [ opponent move ] [ game result ]
+    int part2LookupTable [3][3] = {
         { 3, 4, 8 },
         { 1, 5, 9 },
         { 2, 6, 7 }
     };
 
-    ins.open("input-files/day2-full.txt");
-    if(ins.fail()){exit(1);}    // Handle file error
+    inputString.open("input-files/day2-full.txt");
+    if(inputString.fail()){exit(1);}    // Handle file error
 
-    while(ins.get(game, 4)){
-        score1 += opp_my[game[0] - 'A'][game[2] - 'X'];
-        score2 += opp_res[game[0] - 'A'][game[2] - 'X'];
-        ins.ignore(1);
+    while(inputString.get(game, 4)){
+        part1Score += part1BasedLookupTable[game[0] - 'A'][game[2] - 'X'];
+        part2Score += part2LookupTable[game[0] - 'A'][game[2] - 'X'];
+        inputString.ignore(1);
     }
 
-    std::cout << "score-first:  " << score1 << std::endl;
-    std::cout << "score-second: " << score2 << std::endl;
-    ins.close();
+    std::cout << "part 1 score: " << part1Score << std::endl;
+    std::cout << "part 2 score: " << part2Score << std::endl;
+    inputString.close();
 }

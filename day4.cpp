@@ -4,39 +4,39 @@
 #include <vector>
 
 int main(){
-    std::ifstream ins;
+    std::ifstream inStream;
     std::string tmp;
-    std::stringstream ss;
-    std::vector<int> v;
-    int total = 0;
-    ins.open("input-files/day4-full.txt");
-    if(ins.fail()){exit(1);}
+    std::stringstream stringStream;
+    std::vector<int> listOfPairs;
+    int totalAssignmentPairs = 0;
+    inStream.open("input-files/day4-full.txt");
+    if(inStream.fail()){exit(1);}
     
-    while(getline(ins, tmp)){
-        ss << tmp;
-        getline(ss, tmp, '-');
-        v.push_back(stoi(tmp));
-        getline(ss, tmp, ',');
-        v.push_back(stoi(tmp));
-        getline(ss, tmp, '-');
-        v.push_back(stoi(tmp));
-        getline(ss, tmp);
-        v.push_back(stoi(tmp));
+    while(getline(inStream, tmp)){
+        stringStream << tmp;
+        getline(stringStream, tmp, '-');
+        listOfPairs.push_back(stoi(tmp));
+        getline(stringStream, tmp, ',');
+        listOfPairs.push_back(stoi(tmp));
+        getline(stringStream, tmp, '-');
+        listOfPairs.push_back(stoi(tmp));
+        getline(stringStream, tmp);
+        listOfPairs.push_back(stoi(tmp));
 
         //contain
-        //if((v.at(0) <= v.at(2) && v.at(1) >= v.at(3)) || (v.at(2) <= v.at(0) && v.at(3) >= v.at(1))) {
-        //    total++;
+        //if((listOfPairs.at(0) <= listOfPairs.at(2) && listOfPairs.at(1) >= listOfPairs.at(3)) || (listOfPairs.at(2) <= listOfPairs.at(0) && listOfPairs.at(3) >= listOfPairs.at(1))) {
+        //    totalAssignmentPairs++;
         //}
 
         //overlap
-        if(!(v.at(1) < v.at(2) || v.at(3) < v.at(0))) {
-            total++;
+        if(!(listOfPairs.at(1) < listOfPairs.at(2) || listOfPairs.at(3) < listOfPairs.at(0))) {
+            totalAssignmentPairs++;
         }
 
-        v.clear();
-        ss.clear();
+        listOfPairs.clear();
+        stringStream.clear();
     }
-    std::cout << total << std::endl;
-    ins.close();
+    std::cout << totalAssignmentPairs << std::endl;
+    inStream.close();
 }
 
