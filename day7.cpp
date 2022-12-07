@@ -4,72 +4,66 @@
 #include <unordered_set>
 
 struct Folder{
-    Folder(std::string n = "??", std::string p = "??", int s = 0){name = n; parent = p; size = s;}
+    Folder(std::string n = "??", int p = -1, int s = 0){name = n; parent = p; size = s;}
 
     std::string name;
     int size;
-    std::string parent;
+    int parent;
 };
 
 int main(){
     std::ifstream inStream;
     std::string tmp;
-    std::vector<Folder> allFolders = {Folder("/", "#")};
-    inStream.open("input-files/day7-basic.txt");
+    int total = 0;
+    std::vector<Folder> allFolders = {Folder("/")};
+    inStream.open("input-files/day7-full.txt");
     if(inStream.fail()){exit(1);}
 
-    std::string curDir;
+    int curDir = 0;
     while(getline(inStream, tmp)){
-        //std::cout << "peek: " << char(inStream.peek()) << std::endl;
-        std::cout << tmp << std::endl;
         if(tmp.at(0) == '$'){   // command incoming
             if(tmp.substr(2,2) == "cd"){
-                std::string oldDir = curDir;
-                curDir = tmp.substr(5,tmp.size()-5);
-                std::cout << "\tcd -> " << curDir << std::endl;
-                if(curDir == ".."){ // go to parent
-                    for (size_t i = 0; i < allFolders.size(); i++)
-                    {
-                        if(allFolders.at(i).name == oldDir){
-                            curDir = allFolders.at(i).parent;
-                        }
-                    }
-                    
-                    // find parent
-                    // old dir -> parent
-                } else if(curDir == "/"){ // go to root
-                    
+                std::string newDirName = tmp.substr(5,tmp.size()-5);
+                if(newDirName == ".."){ // go to parent
+                    curDir = allFolders.at(curDir).parent;
+                } else if(newDirName== "/"){ // go to root
+                    curDir = 0;
                 } else {
-                    allFolders.push_back(Folder(curDir, oldDir));
+                    allFolders.push_back(Folder(newDirName, curDir));
+                    curDir = allFolders.size() - 1;
                 }            
             } else if(tmp.substr(2,2) == "ls"){
-                std::cout << "\tls  " << std::endl;
-                
                 while(char(inStream.peek()) != '$' && !inStream.eof()){
                     getline(inStream,tmp);
-                    std::cout << "\t\t" << tmp << std::endl;
-                    //update cur dir by adding up file sizes
-                    // for (size_t i = 0; i < allFolders.size(); i++)
-                    // {
-                    //     if()
-                    // }
-                    
-
-                    //add directories to list of directories
-
-                    //list out files and directory sizes
+                    if(tmp.at(0) != 'd'){   // file
+                        allFolders.at(curDir).size += stoi(tmp);
+                    }
+                }
+                int cursor = allFolders.at(curDir).parent;
+                while(cursor >= 0){ // add size of directory to all parents.
+                    allFolders.at(cursor).size += allFolders.at(curDir).size;
+                    cursor = allFolders.at(cursor).parent;
                 }
             }
         }
     }
 
-    std::cout << std::endl;
-    for (size_t i = 0; i < allFolders.size(); i++)
-    {
-        std::cout << allFolders.at(i).name << " (" << allFolders.at(i).parent << ") : " <<  allFolders.at(i).size << std::endl;
+    for (size_t i = 0; i < allFolders.size(); i++){
+        if(allFolders.at(i).size <= 100000){
+            total += allFolders.at(i).size;
+        }
     }
     
+    std::cout << "total " << total << std::endl;
 
+    int currentSize = allFolders.at(0).size;
+    int deletedDirectory = 50000000;
+    for (size_t i = 0; i < allFolders.size(); i++){
+        if(currentSize - allFolders.at(i).size <= 40000000 && allFolders.at(i).size < deletedDirectory){
+            deletedDirectory = allFolders.at(i).size;
+        }
+    }
+
+    std::cout << "deleted " << deletedDirectory << std::endl;
     inStream.close();
-    
 }
