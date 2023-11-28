@@ -1,6 +1,6 @@
 # Executables
-*.o
-*-run
+input.txt
+*+
 
 #VSCODE
 .vscode
