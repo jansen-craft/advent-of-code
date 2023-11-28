@@ -1,12 +1,7 @@
-# Generic make rules for advent 
-CCFLAGS=clang++ -std=c++20 -Wall
+COMPILE = g++ -Wall -Werror -std=c++11
 
-a:
-	@ echo "\tuse: make day<*>"
+day%: day%.cpp
+	$(COMPILE) $< -o $@+
 
-day% : day%.cpp
-	@ $(CCFLAGS) $< -o $@-run
-	@ echo "\trun: ./$@-run"
-
-clean:
-	- rm -f day*-run
+clean: 
+	-@rm -f */*+
