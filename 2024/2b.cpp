@@ -5,7 +5,7 @@
 #include <sstream>
 using namespace std;
 
-bool safe(vector<int> v){
+bool safe(const vector<int>& v){
     vector<int> diff;
     for(int i = 1; i < v.size(); i++)
         diff.push_back(v[i]-v[i-1]);
@@ -21,19 +21,18 @@ bool safe(vector<int> v){
 }
 
 int main(){
-    vector<int> v;
     int x;
-    string tmp;
+    string line;
 
     int num_safe = 0;
-    while(getline(cin,tmp)){
-        stringstream ss(tmp);
+    while(getline(cin,line)){
+        vector<int> v;
+        stringstream ss(line);
         while(ss >> x) v.push_back(x);
 
         // everything
         if (safe(v)) {
             num_safe++;
-            v.clear();
             continue;
         }
 
@@ -45,12 +44,10 @@ int main(){
             v.insert(v.begin() + i, removed_number);    // put it back
             if (new_v_is_safe) {
                 num_safe++;
-                v.clear();
                 continue;
             }
         }
 
-        v.clear();
     }
 
     cout << num_safe << '\n';
