@@ -4,8 +4,8 @@ COMPILE = g++ -Wall -Werror -std=c++11
 	$(COMPILE) $< -o $@+
 
 ci:
-	-@rm l b
+	-@rm -f l b
 	touch l b
 
 clean: 
-	-@rm -f */*+
+	-@rm -f */*+ l b
