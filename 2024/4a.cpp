@@ -31,6 +31,6 @@ int main(){
     int sum = 0;
     for (int i = 0; i < g.size(); i++)
         for (int j = 0; j < g[i].size(); j++)
-            sum += how_many_bro(i,j);
+            if (g[j][i] == 'X') sum += how_many_bro(i,j);
     cout << sum << '\n';
 }
