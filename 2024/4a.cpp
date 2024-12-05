@@ -4,16 +4,14 @@ using namespace std;
 
 vector<string> g;
 vector<pair<int,int>> directions = {{-1,-1},{0,-1},{1,-1},{-1,0},{1,0},{-1,1},{0,1},{1,1}};
+string xmas = "XMAS";
 
 bool check_dir(int x, int y, int dir){
-    int x_inc = directions[dir].first;
-    int y_inc = directions[dir].second;
-    string word = "XMAS";
     for (int i = 0; i < 4; i++){
         if (y >= g.size() || x >= g[y].size()) return false;
-        if (g[y][x] != word[i]) return false;
-        x += x_inc;
-        y += y_inc;
+        if (g[y][x] != xmas[i]) return false;
+        x += directions[dir].first;
+        y += directions[dir].second;
     }
     return true;
 }
