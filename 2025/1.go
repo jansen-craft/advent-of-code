@@ -7,13 +7,6 @@ import (
 	"strconv"
 )
 
-func abs(a int) int {
-	if a < 0 {
-		return -a
-	}
-	return a
-}
-
 func norm(a, M int) int {
 	return (a%M + M) % M
 }
@@ -45,7 +38,7 @@ func zeroCrossings(a, delta, M int) int {
 	return 0
 }
 
-func main() {
+func Day1() {
 	const M = 100
 	scanner := bufio.NewScanner(os.Stdin)
 	index := 50
